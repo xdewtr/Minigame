@@ -13,7 +13,7 @@ var card1pos;
 var card2pos;
 
 var cpairs = [];
-var foundCard = [];
+
 var column = 4;
 var row    = 4;
 var cardTotal = column * row;
@@ -23,7 +23,7 @@ var backside = 'X';
 var clickcnt = 0;
 
 // bool table
-var clickable = [];
+var nclickable = [];
 var reset = false;
 var foundPairs = [];
 /*
@@ -90,25 +90,43 @@ function convert(id){
     return String.fromCharCode(id+65);
 }
 function rule(id){
-    if(!clickable[id])       // means it's not clickable
+    if(nclickable[id]){       // means it's not clickable
+        alert("ouch");
         return;
+    }
 
     if(reset){
         hide(card1pos);
         hide(card2pos);
+        nclickable[card1pos]= false;
+        nclickable[card2pos]= false;
+        reset = false;
     }
 
     // first card
     if(clickcnt == 0){
-
+        card1pos = id;
+        clickcnt++;
+        card1val = cpairs[id];
+        show(id);
+        nclickable[id] = true;  // make it not clickable
     }
     //second card
     else if(clickcnt == 1){
-
+        card2pos = id;
+        card2val = cpairs[id];
+        nclickable[id]= true;
+        // detection starts
         if(card1val == card2val){
-            pairs++;
-                
+            numpairs++;
+            foundPairs[card1val] = true;        // mark as found    
         }
+        // they are not the same
+        else{
+            reset = true;
+        }
+        clickcnt = 0;
+        // detection ends
 
     }
 
