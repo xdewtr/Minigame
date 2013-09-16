@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<script>
+/*
+    Variables
+*/
+var card1val;
+var card2val;
+var card1pos;
+var card2pos;
+
+var cpairs = [];
+var foundCard = [];
+var column = 4;
+var row    = 4;
+var cardTotal = column * row;
+var trial  = 0;
+var numpairs  = 0;
+var backside = 'X';
+var clickcnt = 0;
+
+// bool table
+var clickable = [];
+var reset = false;
+var foundPairs = [];
+/*
+    Lazy var
+*/
+var d = document;
+
+/*
+    Initialization
+*/
+function iniCard(){
+    
+    for(var k = 0; k < cardTotal; k=k+2){
+        cpairs[k] = k/2;
+        cpairs[k+1] = k/2;
+    }
+    
+}
+function createTable(){
+    var cnt = 0;
+    d.write('<div align="center">Score <div id="score"></div><table border="1" id="main" style="font-family:Verdana; font-size:300%;cursor:pointer;">');
+    
+    for(var i = 0; i < column; i++){
+        d.write('<tr>');    
+        for(var j = 0; j < row; j++){
+            d.write('<td align="center" id="'+cnt+'" onclick="rule('+cnt+')">' +backside+' </td>');
+            // because rule takes var para we cant remove attr  
+            cnt++;
+        }
+        d.write('</tr>');
+            
+    }
+
+    d.write('</talbe></div>');
+}
+
+/*
+    Helper Functions
+*/
+function mixer(){
+
+    for(k in cpairs){
+    //make sure pos is between 0-51
+        var pos = parseInt(Math.random() * 16);
+        
+        //swap
+        var temp = cpairs[k];
+        cpairs[k] = cpairs[pos];
+        cpairs[pos] = temp;
+
+    }
+
+}
+
+
+function hide(id){
+    d.getElementById(id).innerHTML = backside;
+}
+function show(id){
+    d.getElementById(id).innerHTML = convert(cpairs[id]);
+}
+function convert(id){
+    // ascii 65 is A
+    return String.fromCharCode(id+65);
+}
+function rule(id){
+    if(!clickable[id])       // means it's not clickable
+        return;
+
+    if(reset){
+        hide(card1pos);
+        hide(card2pos);
+    }
+
+    // first card
+    if(clickcnt == 0){
+
+    }
+    //second card
+    else if(clickcnt == 1){
+
+        if(card1val == card2val){
+            pairs++;
+                
+        }
+
+    }
+
+    show(id);
+}
+
+/*
+    DEBUG
+*/
+iniCard();
+createTable();
+console.log(cardTotal);
+mixer();
+console.log(cpairs);
+</script>
+
+</body>
+</html>
