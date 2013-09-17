@@ -49,7 +49,7 @@ function createTable(){
     for(var i = 0; i < column; i++){
         d.write('<tr>');    
         for(var j = 0; j < row; j++){
-            d.write('<td align="center" id="'+cnt+'" onclick="rule('+cnt+')">' +backside+' </td>');
+            d.write('<td align="center" id="'+cnt+'">' +backside+' </td>');
             // because rule takes var para we cant remove attr  
             cnt++;
         }
@@ -58,6 +58,14 @@ function createTable(){
     }
 
     d.write('</talbe></div>');
+
+    var e = d.getElementById("main");
+    console.log(e);
+    e.addEventListener("click",rule,false);
+
+    // why can't we just pass event.target.id
+    // cuz the event here ?
+
 }
 
 /*
@@ -81,15 +89,20 @@ function mixer(){
 
 function hide(id){
     d.getElementById(id).innerHTML = backside;
+    d.getElementById(id).style.backgroundColor="#FFFFFF";
 }
 function show(id){
     d.getElementById(id).innerHTML = convert(cpairs[id]);
+    d.getElementById(id).style.backgroundColor="#"+(cpairs[id]);
 }
 function convert(id){
     // ascii 65 is A
     return String.fromCharCode(id+65);
 }
-function rule(id){
+function rule(){
+    id = event.target.id;
+    if(!isFinite(id))
+        return;
     if(nclickable[id]){       // means it's not clickable
         alert("ouch");
         return;
